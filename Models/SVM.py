@@ -14,11 +14,10 @@ y_test = pd.read_csv('../CMAPSSData/RUL_FD001.txt', names=['RUL'])
 drop_coloumns = ['settings 1', 'settings 2', 'settings 3', 'sensor 1', 'sensor 5', 'sensor 6', 'sensor 10',
                  'sensor 16', 'sensor 18', 'sensor 19']
 
-scaler = MinMaxScaler()
 
-X_train, y_train = prepareTrainData(train, drop_coloumns, scaler)
+X_train, y_train = prepareTrainData(train, drop_coloumns)
 X_test = test.groupby('unit number').last().reset_index()
-X_test, _ = prepareTrainData(X_test, drop_coloumns, scaler)
+X_test, _ = prepareTrainData(X_test, drop_coloumns)
 
 poly = PolynomialFeatures(3)
 X_train = poly.fit_transform(X_train)

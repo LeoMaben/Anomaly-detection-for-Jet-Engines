@@ -6,10 +6,12 @@ from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-def prepareTrainData(train_df:pandas.DataFrame, drop_coloumns:List[str], scaler):
+def prepareTrainData(train_df:pandas.DataFrame, drop_coloumns:List[str]):
     train_df = train_df.drop(drop_coloumns, axis=1)
     train_df['RUL'] = train_df.groupby('unit number')['time cycles'].transform(max) - train_df['time cycles']
     train_df = train_df.drop(['unit number', 'time cycles'], axis=1)
+
+    scaler = StandardScaler()
 
     X = train_df.drop('RUL', axis=1)
     y = train_df['RUL'].clip(upper=125)
@@ -41,12 +43,11 @@ def main():
 
     drop_coloumns = ['settings 1', 'settings 2', 'settings 3', 'sensor 1',  'sensor 5', 'sensor 6', 'sensor 10',
                      'sensor 16', 'sensor 18', 'sensor 19']
-    scaler = StandardScaler()
 
-    X_train_scaled, y_train = prepareTrainData(train_df, drop_coloumns, scaler)
+    X_train_scaled, y_train = prepareTrainData(train_df, drop_coloumns)
 
     X_test = test_df.groupby('unit number').last().reset_index()
-    X_test_scaled, _ = prepareTrainData(X_test, drop_coloumns, scaler)
+    X_test_scaled, _ = prepareTrainData(X_test, drop_coloumns)
 
     poly = PolynomialFeatures(3)
     X_train = poly.fit_transform(X_train_scaled)
