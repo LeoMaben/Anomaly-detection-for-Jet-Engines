@@ -27,7 +27,7 @@ class DataProcessing:
         train_df = self.__preprocessData(self.train_df, drop_columns)
         test_df = self.__preprocessData(self.test_df, drop_columns)
 
-        self.names = self.__setColumnNames(train_df)
+        self.names = self.__setColumnNames(train_df.drop('RUL', axis=1))
 
         scaler = StandardScaler()
 
