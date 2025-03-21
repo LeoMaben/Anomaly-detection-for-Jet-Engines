@@ -1,9 +1,6 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from LinearRegression import DataProcessing
-from sklearn.preprocessing import StandardScaler, PolynomialFeatures, MinMaxScaler
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 
@@ -22,6 +19,18 @@ def hyperparameterTuning(X_train, y_train):
     print("Best Parameters:", grid_search.best_params_)
 
 
+def plotImportantFeatures(rf_regressor: RandomForestRegressor, data_processor: DataProcessing):
+    imp_features = rf_regressor.feature_importances_
+    feature_names = data_processor.getColumnNames()
+
+    plt.barh(feature_names, imp_features)
+    plt.xlabel('Feature importance score')
+    plt.ylabel('Features')
+    plt.title('Important features of the dataset in a random forest model')
+    plt.show()
+
+
+
 def main():
     train_path = '../clean_data/train_FD001.csv'
     test_path = '../clean_data/test_FD001.csv'
@@ -35,9 +44,9 @@ def main():
     data_processor = DataProcessing(train_path, test_path)
     X_train, y_train, X_test = data_processor.prepareData(drop_columns)
 
-    hyperparameterTuning(X_train, y_train)
+    # hyperparameterTuning(X_train, y_train)
 
-    rf_regressor = RandomForestRegressor(n_estimators=100, random_state=42)
+    rf_regressor = RandomForestRegressor(n_estimators=90, random_state=42)
 
     rf_regressor.fit(X_train, y_train)
 
@@ -47,16 +56,7 @@ def main():
     data_processor.evaluate(y_train, y_train_predicitions)
     data_processor.evaluate(y_test, y_test_predicitions)
 
-    imp_features = rf_regressor.feature_importances_
-    feature_names = data_processor.getColumnNames()
-
-    plt.barh(feature_names, imp_features)
-    plt.xlabel('Feature importance score')
-    plt.ylabel('Features')
-    plt.title('Important features of the dataset in a random forest model')
-    plt.show()
-
-
+    # plotImportantFeatures(rf_regressor, data_processor)
 
 
 if __name__ == '__main__':
