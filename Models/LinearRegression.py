@@ -8,6 +8,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 class DataProcessing:
     def __init__(self, train_path:str, test_path: str):
+        self.names = []
         self.train_df = pd.read_csv(train_path)
         test_df = pd.read_csv(test_path)
         test_df = test_df.groupby('unit number').last().reset_index()
@@ -25,6 +26,8 @@ class DataProcessing:
 
         train_df = self.__preprocessData(self.train_df, drop_columns)
         test_df = self.__preprocessData(self.test_df, drop_columns)
+
+        self.names = self.__setColumnNames(train_df)
 
         scaler = StandardScaler()
 
@@ -46,6 +49,12 @@ class DataProcessing:
         print(f'Mean Absolute Error is: {mae}\n'
               f'Mean Squared Error is: {rmse}\n'
               f'R2 Score is: {r2}')
+
+    def __setColumnNames(self, df):
+        return df.columns
+
+    def getColumnNames(self):
+        return self.names
 
 def main():
     train_path = '../clean_data/train_FD001.csv'
