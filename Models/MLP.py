@@ -2,8 +2,10 @@ import numpy as np
 import pandas as pd
 from LinearRegression import DataProcessing
 from tensorflow import keras
+import tensorflow as tf
 
 def main():
+
     train_path = '../clean_data/train_FD001.csv'
     test_path = '../clean_data/test_FD001.csv'
 
@@ -24,7 +26,7 @@ def main():
         keras.layers.Dense(1)
     ])
 
-    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+    model.compile(optimizer= tf.keras.optimizers.Adam(learning_rate=0.01), loss='mae')
 
     history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=32,
                         verbose=1)
@@ -32,8 +34,9 @@ def main():
     y_train_predicitions = model.predict(X_train)
     y_test_predicitions = model.predict(X_test)
 
-
+    print('Training Data: ')
     data_processor.evaluate(y_train, y_train_predicitions)
+    print('-------------------------\nTest Data: ')
     data_processor.evaluate(y_test, y_test_predicitions)
 
 

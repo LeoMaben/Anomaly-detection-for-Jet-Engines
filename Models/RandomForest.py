@@ -1,9 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from LinearRegression import DataProcessing
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor, BaggingRegressor
 from sklearn.model_selection import GridSearchCV
-
+from xgboost import XGBRegressor
 
 def hyperparameterTuning(X_train, y_train):
     param_grid = {
@@ -46,14 +46,19 @@ def main():
 
     # hyperparameterTuning(X_train, y_train)
 
-    rf_regressor = RandomForestRegressor(n_estimators=90, random_state=42)
+    # rf_regressor = BaggingRegressor(base_estimator=RandomForestRegressor(n_estimators=90), n_estimators=10,
+    #                                 random_state=42)
+    # rf_regressor = RandomForestRegressor(n_estimators=90, random_state=42)
+    rf_regressor = XGBRegressor(n_estimators=90, learning_rate=0.1, max_depth=10, random_state=42)
 
     rf_regressor.fit(X_train, y_train)
 
-    y_train_predicitions = rf_regressor.predict(X_train)
+    y_train_predictions = rf_regressor.predict(X_train)
     y_test_predicitions = rf_regressor.predict(X_test)
 
-    data_processor.evaluate(y_train, y_train_predicitions)
+    print('Training Data: ')
+    data_processor.evaluate(y_train, y_train_predictions)
+    print('-------------------------\nTest Data: ')
     data_processor.evaluate(y_test, y_test_predicitions)
 
     # plotImportantFeatures(rf_regressor, data_processor)

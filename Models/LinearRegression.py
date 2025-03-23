@@ -70,9 +70,9 @@ def main():
     X_train, y_train, X_test = data_processor.prepareData(drop_columns)
 
 
-    poly = PolynomialFeatures(3)
-    X_train = poly.fit_transform(X_train)
-    X_test = poly.fit_transform(X_test)
+    # poly = PolynomialFeatures(3)
+    # X_train = poly.fit_transform(X_train)
+    # X_test = poly.fit_transform(X_test)
 
 
     model = LinearRegression()
