@@ -7,9 +7,11 @@ which contains sensor readings from multiple engines over time.
 The goal is to develop a predictive model that can estimate how long an engine will continue to function before failure occurs.  
 
 ## **Things Learned**
-- MLP and XGBoost performed the best in the experiments. 
+- Random Forest and XGBoost performed the best in the experiments. 
 - Ensemble methods improved predictive accuracy by combining multiple models. 
 - Feature selection played a crucial role in optimizing performance.
+- Neural Network solutions does have the potential for better results however more optimization regarding feature 
+selection is needed while also checking the use of other models such as LSTM for this particular use case (Future Possibilities)
 
 ## **Dataset Description**  
 The dataset consists of time-series sensor readings for multiple engines. 
